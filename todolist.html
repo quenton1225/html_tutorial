@@ -1,0 +1,157 @@
+<html lang="en">
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<!-- feel free to revise this file -->
+
+<head>
+    <title>To-do List</title>
+    <style>
+        /* ----------------- CLASS ----------------- */
+
+        .block {
+            display: block;
+        }
+
+        .container {
+            margin: auto;
+            width: 70%;
+        }
+
+        .expand {
+            margin: auto;
+            width: 100%;
+        }
+
+        .solved {
+            text-decoration: line-through;
+        }
+
+        .hidden {
+            display: none;
+            /*visibility: hidden;*/
+        }
+
+        /* ----------------- ID ----------------- */
+        #input_box {
+            font-size: large;
+            overflow: auto;
+        }
+
+        /* ----------------- ELEMENT ----------------- */
+        button {
+            font-size: large;
+            padding: 10px;
+            border: 2px solid mediumaquamarine;
+            border-radius: 15px;
+            margin-left: 20px;
+            box-shadow: 2px 2px 0 lightgray;
+            background-color: aquamarine;
+        }
+
+        button:hover {
+            background-color: mediumseagreen;
+            color: white;
+        }
+
+        li {
+            font-size: 30px;
+        }
+
+        li:nth-child(3n) {
+            color: red;
+        }
+
+        li:nth-child(3n+1) {
+            color: black;
+        }
+
+        li:nth-child(3n+2) {
+            color: gray;
+        }
+
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <label class="block">To-do List
+        <textarea id="input_box" class="block expand" rows="3">Lecture preparation: cloud computing, 1; Dinner with Prof. Wong, 2; Walk my dog, 3; Lecture preparation: probability, 1
+        </textarea>
+    </label>
+</div>
+<br>
+<div class='container'>
+    <div class="block expand">
+        <button id='btn_add' onclick="addText()">Add</button>
+        <button id='btn_hide' onclick="toggleText()">Toggle</button>
+    </div>
+</div>
+<div class="container">
+    <ol id='order_list'>
+    </ol>
+</div>
+</body>
+
+<script>
+    // write your Javascript here
+    const texts = document.getElementById("input_box");
+    const order = document.getElementById("order_list");
+    let hidden = false;
+    // var clickStore;
+    // var that = this;
+    function markIt() {
+        if (this.classList.contains("solved") === false) {
+            this.classList.add("solved");
+        } else {
+            this.classList.remove("solved");
+        }
+    }
+
+    function deleteIt() {
+        if (confirm("Are you sure you want to delete this line?")) {
+            this.remove();
+        }
+    }
+
+    // function dealClick() {
+    //     clickStore = setTimeout(function() {return markIt()}, 300);
+    // } // dealClick
+    //
+    // function dealDblClick() {
+    //     clearTimeout(clickStore);
+    //     if (confirm("Are you sure you want to delete this line?")) {
+    //         this.remove();
+    //     }
+    // }
+    //
+    // document.addEventListener('click', dealClick)
+    // document.addEventListener('dblclick', dealDblClick);
+
+    function addText() {
+        let inputs = texts.value.split(";");
+        for (let each of inputs) {
+            if (each.trim() === "") {
+                continue
+            }
+            let pair = each.split(",")
+            let newLi = document.createElement("li");
+            newLi.innerHTML = pair[0];
+            newLi.onclick = markIt;
+            newLi.ondblclick = deleteIt;
+            order.insertBefore(newLi, order.children[parseInt(pair[1]) - 1]);
+        }
+    }
+
+    function toggleText() {
+        hidden = !hidden
+        for (let each of order.children) {
+            if (hidden && each.classList.contains("solved")) {
+                each.classList.add("hidden");
+            } else if (!hidden && each.classList.contains("solved")) {
+                each.classList.remove("hidden");
+            }
+        }
+    } // toggleText
+
+</script>
+</html>
+
