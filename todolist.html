@@ -34,15 +34,19 @@
 
         /* ----------------- ID ----------------- */
         #input_box {
-            font-size: large;
+            border: solid 2px;
+            font-size: 20px;
             overflow: auto;
+            padding: 10px;
+            max-width: 100%;
+            min-width: 80%;
         }
 
         /* ----------------- ELEMENT ----------------- */
         * {
             margin: 0;
         }
-        
+
         body {
             min-height: 101%;
             background-color: mediumspringgreen;
@@ -61,10 +65,12 @@
 
         button:hover {
             cursor: pointer;
+            box-shadow: 2px 2px 0 gray;
         }
 
         button#btn_add:hover, button#btn_hide.holding {
             background-color: mediumseagreen;
+            border-color: lightgreen;
             color: white;
         }
 
@@ -95,7 +101,6 @@
         </textarea>
         </label>
     </div>
-    <br>
     <div class='expand'>
         <div class="block expand">
             <button id='btn_add' onclick="addText()">Add</button>
