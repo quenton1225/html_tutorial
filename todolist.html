@@ -6,18 +6,20 @@
     <title>To-do List</title>
     <style>
         /* ----------------- CLASS ----------------- */
-
         .block {
             display: block;
         }
 
         .container {
+            padding: 0 2%;
+            background-color: white;
             margin: auto;
             width: 70%;
         }
 
         .expand {
             margin: auto;
+            padding: 10px 0;
             width: 100%;
         }
 
@@ -37,7 +39,17 @@
         }
 
         /* ----------------- ELEMENT ----------------- */
+        * {
+            margin: 0;
+        }
+        
+        body {
+            min-height: 101%;
+            background-color: mediumspringgreen;
+        }
+
         button {
+            width: 150px;
             font-size: large;
             padding: 10px;
             border: 2px solid mediumaquamarine;
@@ -48,6 +60,10 @@
         }
 
         button:hover {
+            cursor: pointer;
+        }
+
+        button#btn_add:hover, button#btn_hide.holding {
             background-color: mediumseagreen;
             color: white;
         }
@@ -73,21 +89,23 @@
 
 <body>
 <div class="container">
-    <label class="block">To-do List
-        <textarea id="input_box" class="block expand" rows="3">Lecture preparation: cloud computing, 1; Dinner with Prof. Wong, 2; Walk my dog, 3; Lecture preparation: probability, 1
+    <div class="expand">
+        <label class="block">Quenton's To-do List
+            <textarea id="input_box" class="block expand" rows="3">Lecture preparation: cloud computing, 1; Dinner with Prof. Wong, 2; Walk my dog, 3; Lecture preparation: probability, 1
         </textarea>
-    </label>
-</div>
-<br>
-<div class='container'>
-    <div class="block expand">
-        <button id='btn_add' onclick="addText()">Add</button>
-        <button id='btn_hide' onclick="toggleText()">Toggle</button>
+        </label>
     </div>
-</div>
-<div class="container">
-    <ol id='order_list'>
-    </ol>
+    <br>
+    <div class='expand'>
+        <div class="block expand">
+            <button id='btn_add' onclick="addText()">Add</button>
+            <button id='btn_hide' onclick="toggleText()">Toggle</button>
+        </div>
+    </div>
+    <div class="expand">
+        <ol id='order_list'>
+        </ol>
+    </div>
 </div>
 </body>
 
@@ -95,6 +113,7 @@
     // write your Javascript here
     const texts = document.getElementById("input_box");
     const order = document.getElementById("order_list");
+    const btnHide = document.getElementById("btn_hide")
     let hidden = false;
     // var clickStore;
     // var that = this;
@@ -103,14 +122,14 @@
             this.classList.add("solved");
         } else {
             this.classList.remove("solved");
-        }
-    }
+        } // if
+    } // markIt
 
     function deleteIt() {
         if (confirm("Are you sure you want to delete this line?")) {
             this.remove();
-        }
-    }
+        } // if
+    } // deleteIt
 
     // function dealClick() {
     //     clickStore = setTimeout(function() {return markIt()}, 300);
@@ -129,26 +148,32 @@
     function addText() {
         let inputs = texts.value.split(";");
         for (let each of inputs) {
-            if (each.trim() === "") {
+            if (each.replace(",", " ").trim() === "") {
                 continue
-            }
+            } // if
             let pair = each.split(",")
             let newLi = document.createElement("li");
             newLi.innerHTML = pair[0];
             newLi.onclick = markIt;
             newLi.ondblclick = deleteIt;
             order.insertBefore(newLi, order.children[parseInt(pair[1]) - 1]);
-        }
-    }
+        } // for
+    } // addText
 
     function toggleText() {
-        hidden = !hidden
-        for (let each of order.children) {
-            if (hidden && each.classList.contains("solved")) {
-                each.classList.add("hidden");
-            } else if (!hidden && each.classList.contains("solved")) {
-                each.classList.remove("hidden");
-            }
+        if (document.getElementsByClassName("solved").length !== 0) {
+            hidden = !hidden
+            for (let each of order.children) {
+                if (hidden && each.classList.contains("solved")) {
+                    btnHide.classList.add("holding");
+                    btnHide.innerText = "Hidden";
+                    each.classList.add("hidden");
+                } else if (!hidden && each.classList.contains("solved")) {
+                    btnHide.classList.remove("holding");
+                    btnHide.innerText = "Toggle";
+                    each.classList.remove("hidden");
+                } // if
+            } // for
         }
     } // toggleText
 
